@@ -1,0 +1,35 @@
+{
+  "name": "login-register-app",
+  "version": "1.0.0",
+  "description": "login-register-app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/namkang321/login-register-app.git"
+  },
+  "keywords": [
+    "login",
+    "rest",
+    "api",
+    "nodejs",
+    "register"
+  ],
+  "author": "Naravich Chutisilp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/namkang321/login-register-app/issues"
+  },
+  "homepage": "https://github.com/namkang321/login-register-app#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "mysql": "^2.17.1"
+  }
+}
