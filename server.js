@@ -40,6 +40,13 @@ app.use(bodyParser.json())
 app.get('/', function(request, response) {
     response.sendFile(path.join(__dirname + '/login.html'))
 })
+app.get('/user-info', function(request, response) {
+    if (request.session.loggedin) {
+        response.sendFile(path.join(__dirname + '/user-info.html'))
+    } else {
+        response.send('Login first ja')
+    }
+})
 app.get('/home', function(request, response) {
     if (request.session.loggedin) {
         response.send('Welcome back, ' + request.session.username + '!')
@@ -56,11 +63,12 @@ app.get('/user', function(request, response) {
             fields
         ) {
             if (results) {
-                var rows = JSON.parse(JSON.stringify(results[0]))
-                console.log(rows.firstname)
-                var firstname = rows.firstname
-                var lastname = rows.lastname
-                response.status(200).send(`Yay\nfirstname: ${firstname}\nlastname: ${lastname}\n`)
+                // var rows = JSON.parse(JSON.stringify(results[0]))
+                // console.log(rows.firstname)
+                // var firstname = rows.firstname
+                // var lastname = rows.lastname
+                response.send(results[0])
+                // response.status(200).send(`Yay\nfirstname: ${firstname}\nlastname: ${lastname}\n`)
                 return
             } else {
                 console.log("can't find this username on Database!")
@@ -87,7 +95,7 @@ app.post('/auth', function(request, response) {
                     // create 2 session variables
                     request.session.loggedin = true
                     request.session.username = username
-                    response.redirect('/home')
+                    response.redirect('/user-info')
                 } else {
                     response.send('Incorrect Username and/or Password!')
                 }
@@ -100,7 +108,51 @@ app.post('/auth', function(request, response) {
         response.end()
     }
 })
-
+app.post('/uinfo', function(request, response) {
+    if (!request.session.loggedin) {
+        response.send('please login first')
+    } else {
+        var query = 'UPDATE user '
+        var vars = []
+        var password = request.body.password
+        var confirm_password = request.body.confirm_password
+        var firstname = request.body.firstname
+        var lastname = request.body.lastname
+        let isValidPassword = password && confirm_password && password === confirm_password
+        let isFirst = true
+        if (firstname || lastname || isValidPassword) {
+            query += 'SET '
+            if (isValidPassword) {
+                if (!isFirst) {
+                    query += ', '
+                } else isFirst = false
+                query += 'password = ?'
+                vars.push(password)
+            }
+            if (firstname) {
+                if (!isFirst) {
+                    query += ', '
+                } else isFirst = false
+                query += 'firstname = ?'
+                vars.push(firstname)
+            }
+            if (lastname) {
+                if (!isFirst) {
+                    query += ', '
+                } else isFirst = false
+                query += 'lastname = ?'
+                vars.push(lastname)
+            }
+            query += ' WHERE username = ?'
+            vars.push(request.session.username)
+            connection.query(query, vars, function(error, results, fields) {
+                response.send(results.message)
+            })
+        } else {
+            response.send('Please enter someting')
+        }
+    }
+})
 port = process.env.PORT || 3000
 app.listen(port)
 console.log('login-register-app is started on: ' + port)
