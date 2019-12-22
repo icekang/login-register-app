@@ -55,6 +55,9 @@ app.get('/home', function(request, response) {
     }
     response.end()
 })
+app.get('/register', function(request, response) {
+    response.sendFile(path.join(__dirname + '/register.html'))
+})
 app.get('/user', function(request, response) {
     if (request.session.loggedin) {
         connection.query('SELECT * FROM user WHERE username = ?', [request.session.username], function(
@@ -146,12 +149,32 @@ app.post('/uinfo', function(request, response) {
             query += ' WHERE username = ?'
             vars.push(request.session.username)
             connection.query(query, vars, function(error, results, fields) {
-                response.send(results.message)
+                response.send(results)
             })
         } else {
             response.send('Please enter someting')
         }
     }
+})
+app.post('/reg', function(request, response) {
+    var firstname = request.body.firstname
+    var lastname = request.body.lastname
+    var username = request.body.username
+    var password = request.body.password
+    var vars = [firstname, lastname, username, password]
+    query =
+        'INSERT INTO user (firstname, lastname, username, password) values(?, ?, ?, \
+            aes_encrypt(?,UNHEX(SHA2("abracradrabra",512))) \
+        )'
+    connection.query(query, vars, function(error, results, fields) {
+        if (results) {
+            request.session.loggedin = true
+            request.session.username = username
+            response.send(results)
+        } else {
+            response.send('Username is invalid, please choose another username')
+        }
+    })
 })
 port = process.env.PORT || 3000
 app.listen(port)
