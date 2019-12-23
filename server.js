@@ -14,30 +14,22 @@ var path = require('path')
 //     database: 'heroku_6df3c8ebd5bdc40'
 // })
 
-var db_config = {
+// var db_config = {
+//     host: 'us-cdbr-iron-east-05.cleardb.net',
+//     port: 3306,
+//     user: 'ba7d83fe088eec',
+//     password: '69a7476b',
+//     database: 'heroku_6df3c8ebd5bdc40'
+// }
+
+var connection = mysql.createPool({
+    connectionLimit: 10,
     host: 'us-cdbr-iron-east-05.cleardb.net',
     port: 3306,
     user: 'ba7d83fe088eec',
     password: '69a7476b',
     database: 'heroku_6df3c8ebd5bdc40'
-}
-
-var connection
-
-function handleDisconnect() {
-    console.log('handleDisconnect()')
-    if (connection) {
-        connection.destroy()
-    }
-    connection = mysql.createConnection(db_config)
-    connection.connect(function(err) {
-        if (err) {
-            console.log(' Error when connecting to db  (DBERR001):', err)
-            setTimeout(handleDisconnect, 1000)
-        }
-    })
-}
-handleDisconnect()
+})
 // connection.connect(function(err) {
 //     if (err) {
 //         return console.error('error: ' + err.message)
@@ -97,10 +89,6 @@ app.get('/user', function(request, response) {
                 response.send(results[0])
                 // response.status(200).send(`Yay\nfirstname: ${firstname}\nlastname: ${lastname}\n`)
                 return
-            } else if (error) {
-                console.log('MySqL error')
-                setTimeout(handleDisconnect, 1000)
-                response.redirect('/user')
             } else {
                 console.log("can't find this username on Database!")
                 response.status(200).send('an error occurs, please check back in a minute')
@@ -127,10 +115,6 @@ app.post('/auth', function(request, response) {
                     request.session.loggedin = true
                     request.session.username = username
                     response.redirect('/user-info')
-                } else if (error) {
-                    console.log('MySqL error')
-                    setTimeout(handleDisconnect, 1000)
-                    response.redirect('/login')
                 } else {
                     response.send('Incorrect Username and/or Password!')
                 }
@@ -181,13 +165,7 @@ app.post('/uinfo', function(request, response) {
             query += ' WHERE username = ?'
             vars.push(request.session.username)
             connection.query(query, vars, function(error, results, fields) {
-                if (error) {
-                    console.log('MySqL error')
-                    setTimeout(handleDisconnect, 1000)
-                    response.redirect('/user-info')
-                } else {
-                    response.send(results)
-                }
+                response.send(results)
             })
         } else {
             response.send('Please enter someting')
@@ -209,10 +187,6 @@ app.post('/reg', function(request, response) {
             request.session.loggedin = true
             request.session.username = username
             response.send(results)
-        } else if (error) {
-            console.log('MySqL error')
-            setTimeout(handleDisconnect, 1000)
-            response.redirect('/register')
         } else {
             response.send('Username is invalid, please choose another username')
         }
