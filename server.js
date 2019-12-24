@@ -24,11 +24,11 @@ var path = require('path')
 
 var connection = mysql.createPool({
     connectionLimit: 10,
-    host: 'mysql',
+    host: 'mysql-db',
     port: 3306,
     user: 'root',
     password: 'password',
-    database: 'mysql-db'
+    database: 'sys'
 })
 // connection.connect(function(err) {
 //     if (err) {
