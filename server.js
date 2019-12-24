@@ -24,11 +24,11 @@ var path = require('path')
 
 var connection = mysql.createPool({
     connectionLimit: 10,
-    host: 'us-cdbr-iron-east-05.cleardb.net',
+    host: 'mysql',
     port: 3306,
-    user: 'ba7d83fe088eec',
-    password: '69a7476b',
-    database: 'heroku_6df3c8ebd5bdc40'
+    user: 'root',
+    password: 'password',
+    database: 'mysql-db'
 })
 // connection.connect(function(err) {
 //     if (err) {
