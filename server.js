@@ -188,6 +188,7 @@ app.post('/reg', function(request, response) {
             request.session.username = username
             response.send(results)
         } else {
+            console.log(error)
             response.send('Username is invalid, please choose another username')
         }
     })
