@@ -1,5 +1,9 @@
 # Deployed on
-https://login-register-update-app.herokuapp.com/
+https://login-register-update-app.herokuapp.com/<br>
+now with simple javascript api to render https://login-register-update-app.herokuapp.com/user-info current information!<br>
+try with<br>
+user: namkang<br>
+password: pass
 # login-register-app
 login-register-update app<br>
 <h3>set up</h3><br>
