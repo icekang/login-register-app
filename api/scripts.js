@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var userapi = 'localhost/user'
+    var userapi = 'https://login-register-update-app.herokuapp.com/user'
     $.getJSON(userapi, function(data) {
         console.log(data)
         if (data) {
