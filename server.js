@@ -5,37 +5,19 @@ var session = require('express-session')
 var bodyParser = require('body-parser')
 var path = require('path')
 
-// connect to mysql database
-// var connection = mysql.createConnection({
-//     host: 'us-cdbr-iron-east-05.cleardb.net',
-//     port: 3306,
-//     user: 'ba7d83fe088eec',
-//     password: '69a7476b',
-//     database: 'heroku_6df3c8ebd5bdc40'
-// })
-
-// var db_config = {
-//     host: 'us-cdbr-iron-east-05.cleardb.net',
-//     port: 3306,
-//     user: 'ba7d83fe088eec',
-//     password: '69a7476b',
-//     database: 'heroku_6df3c8ebd5bdc40'
-// }
-
 var connection = mysql.createPool({
     connectionLimit: 10,
-    host: 'mysql-db',
+    // host: 'mysql-db',
+    host: 'us-cdbr-iron-east-05.cleardb.net',
     port: 3306,
-    user: 'root',
-    password: 'password',
-    database: 'sys'
+    // user: 'root',
+    // password: 'password',
+    // database: 'sys'
+    user: 'ba7d83fe088eec',
+    password: '69a7476b',
+    database: 'heroku_6df3c8ebd5bdc40'
 })
-// connection.connect(function(err) {
-//     if (err) {
-//         return console.error('error: ' + err.message)
-//     }
-//     console.log('Connected to the MySQL server.')
-// })
+
 // express is for web-application!
 app = express()
 // tell express what packages we are using
