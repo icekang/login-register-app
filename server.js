@@ -35,6 +35,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // display login.html, when in /
+app.get('/api/scripts.js', function(request, response) {
+    response.sendFile(path.join(__dirname + '/api/scripts.js'))
+})
 app.get('/', function(request, response) {
     response.sendFile(path.join(__dirname + '/login.html'))
 })
