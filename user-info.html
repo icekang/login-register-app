@@ -48,12 +48,14 @@
         <div class="login-form">
             <h1>Update User Info Form</h1>
             <form action="uinfo" method="POST">
-                <input type="text" name="firstname" placeholder="Firstname" />
-                <input type="text" name="lastname" placeholder="Lastname" />
+                <input id="input-firstname" type="text" name="firstname" placeholder="Firstname" />
+                <input id="input-lastname" type="text" name="lastname" placeholder="Lastname" />
                 <input type="text" name="password" placeholder="Password" />
                 <input type="text" name="confirm_password" placeholder="Confirm Password" />
                 <input type="submit" />
             </form>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script src="api/scripts.js"></script>
     </body>
 </html>
